@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2021.1 (64-bit)
+# SW Build 3247384 on Thu Jun 10 19:36:07 MDT 2021
+# IP Build 3246043 on Fri Jun 11 00:30:35 MDT 2021
+# Start of session at: Thu Oct 14 15:12:17 2021
+# Process ID: 5581
+# Current directory: /home/manu/Classes/F2021/CompArch/olin-cafe-f21/01_game_of_life/xilinx/01_game_of_life.runs/synth_1
+# Command line: vivado -log main.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source main.tcl
+# Log file: /home/manu/Classes/F2021/CompArch/olin-cafe-f21/01_game_of_life/xilinx/01_game_of_life.runs/synth_1/main.vds
+# Journal file: /home/manu/Classes/F2021/CompArch/olin-cafe-f21/01_game_of_life/xilinx/01_game_of_life.runs/synth_1/vivado.jou
+#-----------------------------------------------------------
+source main.tcl -notrace

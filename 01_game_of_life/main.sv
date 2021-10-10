@@ -92,7 +92,7 @@ module main(clk, buttons, leds, rgb, cols, rows);
 `else // MANUAL_INITIAL_CONDITION
     // You will need to update the constants and size based on the size M.
     if (N == 5) begin
-      bordered_cells_0 = `INIT_5x5_STATIC_TUB;
+      bordered_cells_0 = `INIT_5x5_PERIOD2_TOAD;
     end else if (N == 8) begin
       // Last implementation is what counts.
       bordered_cells_0 = `INIT_8x8_GLIDER;
