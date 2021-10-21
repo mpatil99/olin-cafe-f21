@@ -1,0 +1,41 @@
+module full_adder32(a,b, out, cout);
+  input logic [31:0]a;
+  input logic [31:0]b;
+  output logic [31:0]out;
+  output logic cout;
+  logic [31:0]carry;
+
+  full_adder ADD0(a[0], b[0], 0, out[0], carry[0]);
+  full_adder ADD1(a[1], b[1], carry[0], out[1], carry[1]);
+  full_adder ADD2(a[2], b[2], carry[1], out[2], carry[2]);
+  full_adder ADD3(a[3], b[3], carry[2], out[3], carry[3]);
+  full_adder ADD4(a[4], b[4], carry[3], out[4], carry[4]);
+  full_adder ADD5(a[5], b[5], carry[4], out[5], carry[5]);
+  full_adder ADD6(a[6], b[6], carry[5], out[6], carry[6]);
+  full_adder ADD7(a[7], b[7], carry[6], out[7], carry[7]);
+  full_adder ADD8(a[8], b[8], carry[7], out[8], carry[8]);
+  full_adder ADD9(a[9], b[9], carry[8], out[9], carry[9]);
+  full_adder ADD10(a[10], b[10], carry[9], out[10], carry[10]);
+  full_adder ADD11(a[11], b[11], carry[10], out[11], carry[11]);
+  full_adder ADD12(a[12], b[12], carry[11], out[12], carry[12]);
+  full_adder ADD13(a[13], b[13], carry[12], out[13], carry[13]);
+  full_adder ADD14(a[14], b[14], carry[13], out[14], carry[14]);
+  full_adder ADD15(a[15], b[15], carry[14], out[15], carry[15]);
+  full_adder ADD16(a[16], b[16], carry[15], out[16], carry[16]);
+  full_adder ADD17(a[17], b[17], carry[16], out[17], carry[17]);
+  full_adder ADD18(a[18], b[18], carry[17], out[18], carry[18]);
+  full_adder ADD19(a[19], b[19], carry[18], out[19], carry[19]);
+  full_adder ADD20(a[20], b[20], carry[19], out[20], carry[20]);
+  full_adder ADD21(a[21], b[21], carry[20], out[21], carry[21]);
+  full_adder ADD22(a[22], b[22], carry[21], out[22], carry[22]);
+  full_adder ADD23(a[23], b[23], carry[22], out[23], carry[23]);
+  full_adder ADD24(a[24], b[24], carry[23], out[24], carry[24]);
+  full_adder ADD25(a[25], b[25], carry[24], out[25], carry[25]);
+  full_adder ADD26(a[26], b[26], carry[25], out[26], carry[26]);
+  full_adder ADD27(a[27], b[27], carry[26], out[27], carry[27]);
+  full_adder ADD28(a[28], b[28], carry[27], out[28], carry[28]);
+  full_adder ADD29(a[29], b[29], carry[28], out[29], carry[29]);
+  full_adder ADD30(a[30], b[30], carry[29], out[30], carry[30]);
+  full_adder ADD31(a[31], b[31], carry[30], out[31], cout);
+    
+endmodule
