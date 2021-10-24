@@ -1,6 +1,6 @@
 module adder_n(a, b, c_in, sum, c_out);
 
-parameter N = 8;
+parameter N = 32;
 
 input  wire [N-1:0] a, b;
 input wire c_in;

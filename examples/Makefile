@@ -16,6 +16,10 @@ test_adder_1 : test_adder_1.sv adder_1.sv
 test_adder_n : test_adder_n.sv adder_1.sv adder_n.sv
 	${IVERILOG} $^ -o test_adder_n.bin && ${VVP} test_adder_n.bin 
 
+test_subtractor_n:  adder_1.sv adder_n.sv subtractor_n.sv test_subtractor_n.sv 
+	${IVERILOG} $^ -o test_subtractor_n.bin && ${VVP} test_subtractor_n.bin 
+
+
 test_shift_register : test_shift_register.sv shift_register.sv
 	${IVERILOG} $^ -o test_shift_register.bin && ${VVP} test_shift_register.bin
 
@@ -28,3 +32,4 @@ test_multiplier : multiplier.sv test_multiplier.sv
 
 waves_multiplier : test_multiplier
 	gtkwave muliplier.vcd -a wave_cfgs/multiplier.gtkw
+

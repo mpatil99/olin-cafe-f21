@@ -42,7 +42,7 @@ always_ff @(posedge clk ) begin
   else if (ena) begin
     if (step) begin
       counter <= counter_overflow ? 0: counter + 1;
-      out <= duty_comparator ? 1: 0;
+      out <= duty_comparator;
     end
     else begin
       out <= out;
