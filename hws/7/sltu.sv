@@ -1,7 +1,4 @@
-`timescale 1ns/1ps
-`default_nettype none
-
-module slt(a, b, out);
+module sltu(a, b, out);
 parameter N = 32;
 input wire signed [N-1:0] a, b;
 output logic out;
@@ -14,7 +11,7 @@ logic [N-1:0] not_b, sub_out;
 logic c_out, result_different;
 
 adder_n #(.N(32)) SUB(a, not_b, 1'b1, sub_out, c_out);
-mux4 #(.N(1)) MUX(result_different, 1'b0, 1'b1, result_different, {a[N-1], b[N-1]}, out);
+mux4 #(.N(1)) MUX(result_different, 1'b1, 1'b0, result_different, {a[N-1], b[N-1]}, out);
 always_comb not_b = ~b;
 always_comb result_different = sub_out[N-1];
 endmodule

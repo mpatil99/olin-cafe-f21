@@ -28,9 +28,9 @@ always_comb begin : behavioural_alu_logic
     ALU_AND: result = a & b;
     ALU_OR : result = a | b;
     ALU_XOR : result = a ^ b;
-    ALU_SLL : result = a << b;
-    ALU_SRL : result = a >>  b;
-    ALU_SRA : result = (unsigned_b > 32'd32) ? 0 : a >>> unsigned_b;
+    ALU_SLL : result = a << b[4:0];
+    ALU_SRL : result = a >>  b[4:0];
+    ALU_SRA : result = (unsigned_b[4:0] > 32'd32) ? 0 : a >>> unsigned_b[4:0];
     ALU_ADD : result = sum;
     ALU_SUB : result = difference;
     ALU_SLT : result = { {(N-1){1'b0}}, a < b };
