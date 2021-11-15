@@ -32,7 +32,7 @@ main UUT(clk, buttons, leds, rgb, pmod,
 
 ft6206_model FT6206_MODEL (buttons[0], touch_i2c_scl, touch_i2c_sda);
 
-logic [63:0] cycles_to_run = CLK_HZ*1; // Run for one second.
+logic [63:0] cycles_to_run = CLK_HZ/100; // Run for one second.
 
 // Run our main clock.
 always #(CLK_PERIOD_NS/2) clk = ~clk;

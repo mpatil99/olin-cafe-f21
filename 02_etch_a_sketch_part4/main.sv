@@ -94,6 +94,30 @@ block_ram #(.W(VRAM_W), .L(VRAM_L)) VRAM(
 );
 
 // Put appropriate RAM clearing logic here!
+always_comb begin : counting
+  if(rst) begin
+    vram_state = S_VRAM_CLEARING;
+    vram_clear_counter = 0;
+    vram_wr_data = BLACK;
+    vram_wr_ena = 1;
+  end
+end
+
+always_ff @(  posedge clk ) begin : clear
+  if (vram_state == S_VRAM_CLEARING) begin
+    //need to find address first
+    vram_wr_addr <= vram_clear_counter;
+    
+
+    if (vram_clear_counter == VRAM_L) begin
+      vram_clear_counter = 0;
+      vram_state = S_VRAM_ACTIVE;
+      vram_wr_ena = 0;
+    end else begin
+      vram_clear_counter <= vram_clear_counter +1;
+    end
+  end 
+end
 
 
 assign backlight = 1;
