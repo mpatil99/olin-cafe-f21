@@ -34,6 +34,7 @@ wire o_valid;
 wire [7:0] o_data;
 
 
+// #Instantiate  I2c controller 
 i2c_controller #(.CLK_HZ(CLK_HZ), .I2C_CLK_HZ(I2C_CLK_HZ)) I2C0 (
   .clk(clk), .rst(rst), 
   .scl(scl), .sda(sda),
@@ -63,6 +64,7 @@ logic [$clog2(N_RD_BYTES):0] bytes_counter;
 
 always_ff @(posedge clk) begin
   if(rst) begin
+    // #Reset state and variable to initial conditions
     state <= S_INIT;
     state_after_wait <= S_IDLE;
     bytes_counter <= 0;
@@ -74,27 +76,27 @@ always_ff @(posedge clk) begin
   end else begin
     case(state)
       S_IDLE : begin
-        if(i_ready & ena)
+        if(i_ready & ena) // #If controller is enabled and 12c Controller is ready
           active_register <= TD_STATUS;
           state <= S_GET_REG_REG;
       end
       S_INIT : begin
-        state <= S_SET_THRESHOLD_REG;
+        state <= S_SET_THRESHOLD_REG; // #Jump to state
       end
-      S_SET_THRESHOLD_REG: begin
-        state <= S_WAIT_FOR_I2C_WR;
+      S_SET_THRESHOLD_REG: begin // #Write Threshold reg
+        state <= S_WAIT_FOR_I2C_WR;// #Wait for i2c write
         state_after_wait <= S_SET_THRESHOLD_DATA;
       end
-      S_SET_THRESHOLD_DATA: begin
-        state <= S_WAIT_FOR_I2C_WR;
+      S_SET_THRESHOLD_DATA: begin // #Write Threshold data
+        state <= S_WAIT_FOR_I2C_WR;// #Wait for i2c write
         state_after_wait <= S_IDLE;
       end
       S_GET_REG_REG: begin
-        state <= S_WAIT_FOR_I2C_WR;
+        state <= S_WAIT_FOR_I2C_WR;// #Wait for i2c write
         state_after_wait <= S_GET_REG_DATA;
       end
       S_GET_REG_DATA: begin
-        state <= S_WAIT_FOR_I2C_RD;
+        state <= S_WAIT_FOR_I2C_RD;// #Wait for i2c read
         state_after_wait <= S_GET_REG_DONE;
       end
       S_GET_REG_DONE: begin
@@ -102,10 +104,11 @@ always_ff @(posedge clk) begin
           state <= S_IDLE;
         end
         else begin
-          active_register <= active_register.next;
+          active_register <= active_register.next; // #Iterate through active registers
           case(active_register)
             TD_STATUS: begin
-              num_touches <= |o_data[3:2] ? 0 : o_data[1:0];
+              num_touches <= |o_data[3:2] ? 0 : o_data[1:0]; // # Return touch count if its less than 4 else 0 
+              // #Assign data to touch buffers
               if(o_data[3:0] == 4'd2) begin
                 touch0_buffer.valid <= 1;
                 touch1_buffer.valid <= 1;
@@ -119,6 +122,8 @@ always_ff @(posedge clk) begin
                 touch1_buffer.valid <= 0;
               end
             end
+
+            // # Get data from touches and save to touch 0 buffers
             P1_XH: begin
               touch0_buffer.x[11:8] <= o_data[3:0];
               touch0_buffer.contact <= o_data[7:6];
@@ -137,10 +142,11 @@ always_ff @(posedge clk) begin
           if(active_register == P1_YL) // TODO(avinash) replace constant
             state <= S_TOUCH_DONE;
           else
-            state <= S_GET_REG_REG;
+            state <= S_GET_REG_REG; // #Stay in state till done iterating through registers
         end
       end
       S_TOUCH_DONE: begin
+        // Store touch data in output object
         if(num_touches >= 2'd1) begin
           touch0.valid <= touch0_buffer.valid;
           touch0.x <= DISPLAY_WIDTH - touch0_buffer.x; // fix orientation
@@ -151,16 +157,17 @@ always_ff @(posedge clk) begin
         // See if you can modify the above to do multitouch!
         state <= S_IDLE;
       end      
-      S_WAIT_FOR_I2C_WR : begin
+      S_WAIT_FOR_I2C_WR : begin // #Wait for i2c controller to be ready for input
         if(i_ready) state <= state_after_wait;
       end
-      S_WAIT_FOR_I2C_RD : begin
+      S_WAIT_FOR_I2C_RD : begin // #Wait for i2c controller to be ready for input and have valid output
         if(i_ready & o_valid) state <= state_after_wait;
       end
     endcase
   end
 end
 
+// #Tell the i2c controller whether the data is valid or not
 always_comb case(state)
   S_IDLE: i_valid = 0;
   S_INIT: i_valid = 0;
@@ -181,9 +188,9 @@ endcase
 
 
 always_comb case(state)
-  S_SET_THRESHOLD_REG: i_data = THRESHOLD;
-  S_SET_THRESHOLD_DATA: i_data = `FT6206_DEFAULT_THRESHOLD;
-  S_GET_REG_REG: i_data = active_register;
+  S_SET_THRESHOLD_REG: i_data = THRESHOLD; // #Set Threshold Register as input data
+  S_SET_THRESHOLD_DATA: i_data = `FT6206_DEFAULT_THRESHOLD; // #Set Threshold value as input data
+  S_GET_REG_REG: i_data = active_register; // #Set active register
   default: i_data = 0;
 endcase
 endmodule
